@@ -1,0 +1,52 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<%@ Register Assembly="DevExpress.Web.ASPxGridView.v9.3, Version=9.3.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxGridView" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.ASPxEditors.v9.3, Version=9.3.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxEditors" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v9.3, Version=9.3.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxGlobalEvents" TagPrefix="dx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <style type="text/css">
+        body, html
+        {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        function OnInit(s, e) {
+            AdjustSize();
+        }
+        function OnEndCallback(s, e) {
+            AdjustSize();
+        }
+        function OnControlsInitialized(s, e) {
+            ASPxClientUtils.AttachEventToElement(window, "resize", function(evt) {
+                AdjustSize();
+            });
+        }
+        function AdjustSize() {
+            var height = Math.max(0, document.documentElement.clientHeight);
+            grid.SetHeight(height);
+        }
+    </script>
+</head>
+<body style="overflow: hidden">
+    <form id="form1" runat="server">
+    <dx:ASPxGridView runat="server" ID="gridView" ClientInstanceName="grid" AutoGenerateColumns="true"
+        Width="100%" DataSourceID="ds" KeyFieldName="OrderID">
+        <SettingsPager PageSize="50" />
+        <Settings ShowVerticalScrollBar="true" VerticalScrollableHeight="0" />
+        <ClientSideEvents Init="OnInit" EndCallback="OnEndCallback" />
+    </dx:ASPxGridView>
+    <asp:AccessDataSource ID="ds" runat="server" DataFile="~/App_Data/nwind.mdb" SelectCommand="SELECT TOP 200 * FROM [Orders]">
+    </asp:AccessDataSource>
+    <dx:ASPxGlobalEvents ID="ge" runat="server">
+        <ClientSideEvents ControlsInitialized="OnControlsInitialized" />
+    </dx:ASPxGlobalEvents>
+    </form>
+</body>
+</html>
